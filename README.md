@@ -37,3 +37,53 @@ Download and install hadolint
     chmod +x hadolint
 
     sudo install hadolint /usr/local/bin/
+
+Docker Hub Image
+
+    docker pull itsecat/predict-app
+    
+    ./run_docker.sh
+    
+Kubernetes Pod
+
+    ./run_kubernetes.sh
+Please note that the script starts following two background processes:
+
+    kubectl port-forward "$appname" 8000:80 &
+    
+    kubectl attach "$appname" &
+The first creates a port forwarding from host port 8000 to container port 80.
+The second attaches to container's console output (application logging). It is possible that at the least the first background process must be killed in order to release host port 8000 before another run of the run_kubernetes.sh script.
+
+### Docker Installation
+```
+$ sudo apt-get update
+$ sudo apt-get install \
+    apt-transport-https \
+    ca-certificates \
+    curl \
+    gnupg-agent \
+    software-properties-common
+$ curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+$ sudo add-apt-repository \
+   "deb [arch=amd64] https://download.docker.com/linux/ubuntu \
+   $(lsb_release -cs) \
+   stable"
+$ sudo apt-get update
+$ sudo apt-get install docker-ce docker-ce-cli containerd.io
+$ sudo usermod -aG docker $USER && newgrp docker
+$ docker run hello-world
+```
+
+### Minikube (Kubernetes) Installation
+```
+$ curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key add -
+$ sudo sh -c 'echo "deb http://apt.kubernetes.io/ kubernetes-xenial main" | tee /etc/apt/sources.list.d/kubernetes.list'
+$ sudo apt update
+$ sudo apt install kubectl
+$ kubectl version -o json
+$ curl -Lo minikube https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64 \
+  && chmod +x minikube
+$ sudo install minikube /usr/local/bin/
+$ minikube start --driver=docker
+```
