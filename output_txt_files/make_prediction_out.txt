@@ -1,0 +1,7 @@
+ubuntu@ip-172-31-3-142:~/repos/predict-app$ ./make_prediction.sh
+Port: 8000
+{
+  "prediction": [
+    20.35373177134412
+  ]
+}
