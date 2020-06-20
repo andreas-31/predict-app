@@ -5,19 +5,19 @@ Containerized machine learning application for deployment on a Kubernetes cluste
 [![andreas-31](https://circleci.com/gh/andreas-31/predict-app.svg?style=svg)](https://app.circleci.com/pipelines/github/andreas-31/predict-app)
 
 ## Description of Files in the Repository
-1. Dockerfile
-1. Makefile
-1. README.md
-1. app.py
-1. make_prediction.sh
-1. model_data/
-1. output_txt_files/docker_out.txt
-1. output_txt_files/kubernetes_out.txt
-1. output_txt_files/make_prediction_out.txt
-1. requirements.txt
-1. run_docker.sh
-1. run_kubernetes.sh
-1. upload_docker.sh
+1. Dockerfile: describes the Docker container for running the machine learning app (Flask application app.py)
+1. Makefile: lists steps for setup, installation, testing and linting of app.py
+1. README.md: this file
+1. app.py: machine learning application (Flask python framework) for predicting housing prices
+1. make_prediction.sh: shell script triggering a curl command that sends a JSON request with parameters to app.py port 8000 in order to receive a price prediction in reply
+1. model_data/: folder containing model and data for the machine learning algorithm
+1. output_txt_files/docker_out.txt: output of the Docker container running app.py during processing of the JSON request including price prediction
+1. output_txt_files/kubernetes_out.txt: output of the Kubernetes pod running app.py during processing of the JSON request including price prediction
+1. output_txt_files/make_prediction_out.txt: output of the make_prediction.sh script including received price prediction
+1. requirements.txt: listing of python modules required to be installed by app.py
+1. run_docker.sh: script for running app.py in a Docker container by using the docker command line tool
+1. run_kubernetes.sh: script for running app.py in a Kubernetes pod by using the kubectl command line tool
+1. upload_docker.sh: script for uploading the created Docker image to git Docker Hub, in this case [itsecat/predict-app](https://hub.docker.com/repository/docker/itsecat/predict-app)
 
 ## Commands (run on Ubuntu 18.04.4 LTS)
 Create virtual python environment
@@ -38,6 +38,10 @@ Download and install hadolint
 
     sudo install hadolint /usr/local/bin/
 
+Installation of Requirements, Testing and Linting
+
+    make all
+
 Docker Hub Image
 
     docker pull itsecat/predict-app
@@ -47,7 +51,7 @@ Docker Hub Image
 Kubernetes Pod
 
     ./run_kubernetes.sh
-Please note that the script starts following two background processes:
+Please note that the script run_kubernetes.sh starts two background processes:
 
     kubectl port-forward "$appname" 8000:80 &
     
